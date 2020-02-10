@@ -3,9 +3,9 @@ exports.up = function(knex) {
     articlesTable.increments("article_id").primary();
     articlesTable.string("title").notNullable();
     articlesTable.string("topic").references("topics.slug");
-    articlesTable.string("autor").references("users.username");
+    articlesTable.string("author").references("users.username");
     articlesTable.text("body");
-    articlesTable.timestamp("create_at").defaultTo(knex.fn.now());
+    articlesTable.timestamp("created_at").defaultTo(knex.fn.now());
   });
 };
 
