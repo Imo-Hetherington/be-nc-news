@@ -17,11 +17,14 @@ exports.makeRefObj = list => {
 };
 
 exports.formatComments = (comments, articleRef) => {
-  const formattedComments = comments.map(comment => {
-    let commentCopy = { ...comment };
-    commentCopy.article_id = articleRef[commentCopy.title];
-    delete commentCopy.title;
-    return commentCopy;
-  });
+  const formattedComments = comments.map(
+    ({ belongs_to, created_by, ...props }) => {
+      return {
+        article_id: articleRef[belongs_to],
+        author: created_by,
+        ...props
+      };
+    }
+  );
   return formattedComments;
 };

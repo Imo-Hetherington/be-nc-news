@@ -159,12 +159,13 @@ describe("formatComments", () => {
     expect(formatComments(testArr)).to.eql([]);
     expect(formatComments(testArr)).not.to.equal(testArr);
   });
-  it("Given an array of 1 comment object, will return an array containing that object with title changed to id.", () => {
+  it("Given an array of 1 comment object, will return an array containing that object with title changed to id and created_by changed to author.", () => {
     const testArr = [
       {
         comment_id: 12,
         body: "I love this content!",
-        title: "In defense of Jest"
+        belongs_to: "In defense of Jest",
+        created_by: "pizza"
       }
     ];
     const refObj = { "In defense of Jest": 4 };
@@ -172,26 +173,30 @@ describe("formatComments", () => {
       {
         comment_id: 12,
         body: "I love this content!",
-        article_id: 4
+        article_id: 4,
+        author: "pizza"
       }
     ]);
   });
-  it("Given an array of multiple comment objects, will return an array containing that object with title changed to id.", () => {
+  it("Given an array of multiple comment objects, will return an array containing that object with title changed to id, and created_by changed to username.", () => {
     const testArr = [
       {
         comment_id: 12,
         body: "I love this content!",
-        title: "In defense of Jest"
+        belongs_to: "In defense of Jest",
+        created_by: "pizza"
       },
       {
         comment_id: 5,
         body: "jest sux",
-        title: "In defense of Jest"
+        belongs_to: "In defense of Jest",
+        created_by: "coderTroll3000"
       },
       {
         comment_id: 7,
         body: "Thanks for these great recs!",
-        title: "The 10 Best Board Games of The Decade"
+        belongs_to: "The 10 Best Board Games of The Decade",
+        created_by: "jimothy"
       }
     ];
     const refObj = {
@@ -202,17 +207,20 @@ describe("formatComments", () => {
       {
         comment_id: 12,
         body: "I love this content!",
-        article_id: 4
+        article_id: 4,
+        author: "pizza"
       },
       {
         comment_id: 5,
         body: "jest sux",
-        article_id: 4
+        article_id: 4,
+        author: "coderTroll3000"
       },
       {
         comment_id: 7,
         body: "Thanks for these great recs!",
-        article_id: 19
+        article_id: 19,
+        author: "jimothy"
       }
     ]);
   });
@@ -221,7 +229,8 @@ describe("formatComments", () => {
       {
         comment_id: 12,
         body: "I love this content!",
-        title: "In defense of Jest"
+        belongs_to: "In defense of Jest",
+        created_by: "pizza"
       }
     ];
     const refObj = { "In defense of Jest": 4 };
@@ -230,13 +239,15 @@ describe("formatComments", () => {
       {
         comment_id: 12,
         body: "I love this content!",
-        title: "In defense of Jest"
+        belongs_to: "In defense of Jest",
+        created_by: "pizza"
       }
     ]);
     expect(testArr[0]).to.eql({
       comment_id: 12,
       body: "I love this content!",
-      title: "In defense of Jest"
+      belongs_to: "In defense of Jest",
+      created_by: "pizza"
     });
   });
 });
