@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const { formatDates } = require("../db/utils/utils");
+const { formatDates, makeRefObj } = require("../db/utils/utils");
 
 describe("formatDates", () => {
   it("Given a single object in an array, will return an array", () => {
@@ -66,6 +66,78 @@ describe("formatDates", () => {
     formatDates(testArr);
     expect(testArr).to.eql([
       {
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: 1542284514171,
+        votes: 100
+      }
+    ]);
+  });
+});
+
+describe("makeRefObj", () => {
+  it("Given an array, will return an object.", () => {
+    const testArr = [];
+    expect(makeRefObj(testArr)).to.be.an("object");
+  });
+  it("Given an array containing 1 article object, will return an object with the article title and article_id as a key- value pair.", () => {
+    const testArr = [
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: 1542284514171,
+        votes: 100
+      }
+    ];
+    expect(makeRefObj(testArr)["Living in the shadow of a great man"]).to.equal(
+      1
+    );
+  });
+  it("Given an array containing multiple article objects, will return an object with the titles and article_ids as a key- value pairs.", () => {
+    const testArr = [
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: 1542284514171,
+        votes: 100
+      },
+      {
+        article_id: 53,
+        title: "UNCOVERED: catspiracy to bring down democracy",
+        topic: "cats",
+        author: "rogersop",
+        body: "Bastet walks amongst us, and the cats are taking arms!",
+        created_at: 1037708514171
+      }
+    ];
+    expect(
+      makeRefObj(testArr)["UNCOVERED: catspiracy to bring down democracy"]
+    ).to.equal(53);
+  });
+  it("Will not mutate original array.", () => {
+    const testArr = [
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: 1542284514171,
+        votes: 100
+      }
+    ];
+    makeRefObj(testArr);
+    expect(testArr).to.eql([
+      {
+        article_id: 1,
         title: "Living in the shadow of a great man",
         topic: "mitch",
         author: "butter_bridge",
