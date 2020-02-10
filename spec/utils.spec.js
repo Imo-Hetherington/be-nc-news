@@ -1,5 +1,9 @@
 const { expect } = require("chai");
-const { formatDates, makeRefObj } = require("../db/utils/utils");
+const {
+  formatDates,
+  makeRefObj,
+  formatComments
+} = require("../db/utils/utils");
 
 describe("formatDates", () => {
   it("Given a single object in an array, will return an array", () => {
@@ -146,5 +150,93 @@ describe("makeRefObj", () => {
         votes: 100
       }
     ]);
+  });
+});
+
+describe("formatComments", () => {
+  it("Given an array, will return a new array.", () => {
+    const testArr = [];
+    expect(formatComments(testArr)).to.eql([]);
+    expect(formatComments(testArr)).not.to.equal(testArr);
+  });
+  it("Given an array of 1 comment object, will return an array containing that object with title changed to id.", () => {
+    const testArr = [
+      {
+        comment_id: 12,
+        body: "I love this content!",
+        title: "In defense of Jest"
+      }
+    ];
+    const refObj = { "In defense of Jest": 4 };
+    expect(formatComments(testArr, refObj)).to.eql([
+      {
+        comment_id: 12,
+        body: "I love this content!",
+        article_id: 4
+      }
+    ]);
+  });
+  it("Given an array of multiple comment objects, will return an array containing that object with title changed to id.", () => {
+    const testArr = [
+      {
+        comment_id: 12,
+        body: "I love this content!",
+        title: "In defense of Jest"
+      },
+      {
+        comment_id: 5,
+        body: "jest sux",
+        title: "In defense of Jest"
+      },
+      {
+        comment_id: 7,
+        body: "Thanks for these great recs!",
+        title: "The 10 Best Board Games of The Decade"
+      }
+    ];
+    const refObj = {
+      "In defense of Jest": 4,
+      "The 10 Best Board Games of The Decade": 19
+    };
+    expect(formatComments(testArr, refObj)).to.eql([
+      {
+        comment_id: 12,
+        body: "I love this content!",
+        article_id: 4
+      },
+      {
+        comment_id: 5,
+        body: "jest sux",
+        article_id: 4
+      },
+      {
+        comment_id: 7,
+        body: "Thanks for these great recs!",
+        article_id: 19
+      }
+    ]);
+  });
+  it("Doesn't mutate original array", () => {
+    const testArr = [
+      {
+        comment_id: 12,
+        body: "I love this content!",
+        title: "In defense of Jest"
+      }
+    ];
+    const refObj = { "In defense of Jest": 4 };
+    formatComments(testArr, refObj);
+    expect(testArr).to.eql([
+      {
+        comment_id: 12,
+        body: "I love this content!",
+        title: "In defense of Jest"
+      }
+    ]);
+    expect(testArr[0]).to.eql({
+      comment_id: 12,
+      body: "I love this content!",
+      title: "In defense of Jest"
+    });
   });
 });
