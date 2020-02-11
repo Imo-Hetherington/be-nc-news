@@ -3,8 +3,8 @@ exports.up = function(knex) {
     commentsTable.increments("comment_id").primary();
     commentsTable.text("body").notNullable();
     commentsTable.integer("votes").defaultTo(0);
-    commentsTable.integer("belongs_to").references("articles.article_id");
-    commentsTable.string("created_by").references("users.username");
+    commentsTable.integer("article_id").references("articles.article_id");
+    commentsTable.string("author").references("users.username");
     commentsTable.timestamp("created_at").defaultTo(knex.fn.now());
   });
 };
