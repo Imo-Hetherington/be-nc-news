@@ -72,6 +72,19 @@ describe("app", () => {
                 expect(body.msg).to.equal("User not found");
               });
           });
+          it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
+            const methods = ["post", "delete", "patch", "put"];
+            const methodTests = methods.map(method => {
+              return request(app)
+                [method]("/api/users/6")
+                .expect(405)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Invalid Method");
+                });
+            });
+
+            return Promise.all(methodTests);
+          });
         });
       });
     });
