@@ -1,15 +1,12 @@
 const express = require("express");
 const app = express();
 const apiRouter = require("./routes/api-route");
+const { handle404s, handle500s } = require("./errors/index");
 
 app.use("/api", apiRouter);
 
-app.all("/*", (req, res, next) => {
-  res.status(404).send({ msg: "Path Not Found" });
-});
+app.all("/*", handle404s);
 
-app.use((req, res, next) => {
-  res.status(500).send({ msg: "Server Error" });
-});
+app.use(handle500s);
 
 module.exports = app;
