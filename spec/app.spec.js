@@ -49,6 +49,14 @@ describe("app", () => {
                 );
               });
           });
+          it("Non-existent username - status:404 returns 'user not found' error ", () => {
+            return request(app)
+              .get("/api/users/imabot")
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("User not found");
+              });
+          });
         });
       });
     });
