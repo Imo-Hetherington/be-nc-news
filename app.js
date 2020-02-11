@@ -3,4 +3,13 @@ const app = express();
 const apiRouter = require("./routes/api-route");
 
 app.use("/api", apiRouter);
+
+app.all("/*", (req, res, next) => {
+  res.status(404).send({ msg: "Path Not Found" });
+});
+
+app.use((req, res, next) => {
+  res.status(500).send({ msg: "Server Error" });
+});
+
 module.exports = app;
