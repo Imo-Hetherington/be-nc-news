@@ -12,7 +12,7 @@ describe("app", () => {
 
   after(() => connection.destroy());
 
-  it("Non-existent enpoint - status: 404 and error message of 'path no found'", () => {
+  it("Non-existent endpoint - status: 404 and error message of 'path not found'", () => {
     return request(app)
       .get("/api/nothing-here")
       .expect(404)
@@ -31,6 +31,24 @@ describe("app", () => {
               expect(body.topics).to.be.an("array");
               expect(body.topics[0]).to.have.keys("slug", "description");
             });
+        });
+      });
+    });
+    describe("/users", () => {
+      describe("/:username", () => {
+        describe("GET", () => {
+          it("Success - status: 200 and sends back a single user object", () => {
+            return request(app)
+              .get("/api/users/lurker")
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.user).to.have.keys(
+                  "username",
+                  "name",
+                  "avatar_url"
+                );
+              });
+          });
         });
       });
     });
