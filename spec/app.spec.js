@@ -284,7 +284,7 @@ describe("app", () => {
                 .get("/api/articles/1/comments")
                 .expect(200)
                 .then(({ body: { comments } }) => {
-                  expect(comments).to.be.sortedBy("created_at");
+                  expect(comments).to.be.descendingBy("created_at");
                 });
             });
             it("sort_by query can be passed", () => {
@@ -292,7 +292,15 @@ describe("app", () => {
                 .get("/api/articles/1/comments?sort_by=author")
                 .expect(200)
                 .then(({ body: { comments } }) => {
-                  expect(comments).to.be.sortedBy("author");
+                  expect(comments).to.be.descendingBy("author");
+                });
+            });
+            it("order query can be passed ", () => {
+              return request(app)
+                .get("/api/articles/1/comments?order=asc")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.ascendingBy("created_at");
                 });
             });
             it("Non-existent article_id - status: 404 and returns 'Article Not Found' message", () => {
