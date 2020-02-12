@@ -88,5 +88,35 @@ describe("app", () => {
         });
       });
     });
+    describe.only("/articles", () => {
+      describe("/:article_id", () => {
+        describe("GET", () => {
+          it("Success - status: 200 returns object with default article keys", () => {
+            return request(app)
+              .get("/api/articles/2")
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.article).to.contain.keys(
+                  "article_id",
+                  "title",
+                  "author",
+                  "body",
+                  "topic",
+                  "created_at",
+                  "votes"
+                );
+              });
+          });
+          it("Success - status: 200 and returns object with number of comments on that article on comment_count key", () => {
+            return request(app)
+              .get("/api/articles/1")
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.article.comment_count).to.equal("13");
+              });
+          });
+        });
+      });
+    });
   });
 });
