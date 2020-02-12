@@ -20,5 +20,10 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
     .increment("votes", inc_votes)
     .from("articles")
     .where({ article_id })
-    .returning("*");
+    .returning("*")
+    .then(rows => {
+      if (rows.length === 0)
+        return Promise.reject({ status: 404, msg: "Article Not Found" });
+      else return rows;
+    });
 };

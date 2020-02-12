@@ -143,7 +143,7 @@ describe("app", () => {
                 expect(body.article.votes).to.equal(3);
               });
           });
-          it("inc_votes is negative - status 200 and returns article object with decremented votes", () => {
+          it("Success & inc_votes is negative - status 200 and returns article object with decremented votes", () => {
             const votes = { inc_votes: -10 };
             return request(app)
               .patch("/api/articles/1")
@@ -151,6 +151,26 @@ describe("app", () => {
               .expect(200)
               .then(({ body }) => {
                 expect(body.article.votes).to.equal(90);
+              });
+          });
+          it("Non-existent article_id - status: 404 and returns 'article not found' message", () => {
+            const votes = { inc_votes: 3 };
+            return request(app)
+              .patch("/api/articles/2000")
+              .send(votes)
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Article Not Found");
+              });
+          });
+          it("Invalid article_id - status: 400 and returns 'bad request' message", () => {
+            const votes = { inc_votes: 3 };
+            return request(app)
+              .patch("/api/articles/top")
+              .send(votes)
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Bad Request");
               });
           });
         });
