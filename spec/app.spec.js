@@ -115,6 +115,14 @@ describe("app", () => {
                 expect(body.article.comment_count).to.equal("13");
               });
           });
+          it("Non-existent article_id - status: 404 and returns 'article not found' message", () => {
+            return request(app)
+              .get("/api/articles/2000")
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Article Not Found");
+              });
+          });
         });
       });
     });
