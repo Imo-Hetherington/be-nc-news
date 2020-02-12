@@ -209,11 +209,30 @@ describe("app", () => {
             return Promise.all(methodTests);
           });
         });
-        // describe("/comments", () => {
-        //   describe("POST", () => {
-        //     it("Success and ")
-        //   });
-        // });
+        describe("/comments", () => {
+          describe("POST", () => {
+            it("Success - status 201 and returns the posted comment", () => {
+              return request(app)
+                .post("/api/articles/10/comments")
+                .send({
+                  username: "rogersop",
+                  body: "Classic content, I love to see it!"
+                })
+                .expect(201)
+                .then(({ body }) => {
+                  expect(body.comment).to.be.an("object");
+                  expect(body.comment).to.have.keys(
+                    "comment_id",
+                    "body",
+                    "author",
+                    "votes",
+                    "article_id",
+                    "created_at"
+                  );
+                });
+            });
+          });
+        });
       });
     });
   });

@@ -27,3 +27,14 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
       else return rows;
     });
 };
+
+exports.addComment = ({ username, body }, article_id) => {
+  const newComment = {
+    author: username,
+    body,
+    article_id
+  };
+  return knex("comments")
+    .insert(newComment)
+    .returning("*");
+};
