@@ -8,6 +8,7 @@ const {
   handlePSQLErrors
 } = require("./errors/index");
 
+app.use(express.json());
 app.use("/api", apiRouter);
 
 app.all("/*", handle404s);

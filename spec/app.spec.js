@@ -132,9 +132,21 @@ describe("app", () => {
               });
           });
         });
+        describe("PATCH", () => {
+          it("Success - status 200 and returns article object with incremented votes", () => {
+            const votes = { inc_votes: 3 };
+            return request(app)
+              .patch("/api/articles/3")
+              .send(votes)
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.article.votes).to.equal(3);
+              });
+          });
+        });
         describe("INVALID METHODS", () => {
           it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
-            const methods = ["post", "delete", "patch", "put"];
+            const methods = ["post", "delete", "put"];
             const methodTests = methods.map(method => {
               return request(app)
                 [method]("/api/articles/2")

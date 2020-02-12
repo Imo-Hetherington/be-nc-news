@@ -14,3 +14,11 @@ exports.fetchArticle = article_id => {
       else return rows;
     });
 };
+
+exports.updateArticleVotes = (article_id, inc_votes) => {
+  return knex
+    .increment("votes", inc_votes)
+    .from("articles")
+    .where({ article_id })
+    .returning("*");
+};
