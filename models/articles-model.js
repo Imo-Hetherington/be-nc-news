@@ -44,12 +44,12 @@ exports.addComment = ({ username, body }, article_id) => {
     });
 };
 
-exports.fetchComments = article_id => {
+exports.fetchComments = (article_id, { sort_by = "created_at" }) => {
   return knex
     .select("*")
     .from("comments")
     .where({ article_id })
-    .orderBy("created_at")
+    .orderBy(sort_by)
     .then(rows => {
       if (rows.length === 0)
         return Promise.reject({ status: 404, msg: "Article Not Found" });

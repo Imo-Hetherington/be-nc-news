@@ -287,6 +287,14 @@ describe("app", () => {
                   expect(comments).to.be.sortedBy("created_at");
                 });
             });
+            it("sort_by query can be passed", () => {
+              return request(app)
+                .get("/api/articles/1/comments?sort_by=author")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.sortedBy("author");
+                });
+            });
             it("Non-existent article_id - status: 404 and returns 'Article Not Found' message", () => {
               return request(app)
                 .get("/api/articles/2000/comments")

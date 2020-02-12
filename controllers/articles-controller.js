@@ -36,7 +36,7 @@ exports.postCommentToArticle = (req, res, next) => {
 };
 
 exports.getCommentsByArticle = (req, res, next) => {
-  fetchComments(req.params.article_id)
+  fetchComments(req.params.article_id, req.query)
     .then(comments => {
       res.status(200).send({ comments });
     })
