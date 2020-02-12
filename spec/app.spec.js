@@ -183,6 +183,16 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
+          it("Empty request body - status: 400 and returns 'bad request' message", () => {
+            const votes = {};
+            return request(app)
+              .patch("/api/articles/3")
+              .send(votes)
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Bad Request");
+              });
+          });
         });
         describe("INVALID METHODS", () => {
           it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
@@ -199,6 +209,11 @@ describe("app", () => {
             return Promise.all(methodTests);
           });
         });
+        // describe("/comments", () => {
+        //   describe("POST", () => {
+        //     it("Success and ")
+        //   });
+        // });
       });
     });
   });
