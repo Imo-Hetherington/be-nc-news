@@ -132,6 +132,21 @@ describe("app", () => {
               });
           });
         });
+        describe("INVALID METHODS", () => {
+          it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
+            const methods = ["post", "delete", "patch", "put"];
+            const methodTests = methods.map(method => {
+              return request(app)
+                [method]("/api/articles/2")
+                .expect(405)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Invalid Method");
+                });
+            });
+
+            return Promise.all(methodTests);
+          });
+        });
       });
     });
   });
