@@ -210,7 +210,7 @@ describe("app", () => {
           });
         });
         describe("/comments", () => {
-          describe.only("POST", () => {
+          describe("POST", () => {
             it("Success - status 201 and returns the posted comment", () => {
               const comment = {
                 username: "rogersop",
@@ -256,6 +256,25 @@ describe("app", () => {
                 .expect(400)
                 .then(({ body }) => {
                   expect(body.msg).to.equal("Bad Request");
+                });
+            });
+          });
+          describe("GET", () => {
+            it("Success - status: 200 and returns all comments for a specific article id", () => {
+              return request(app)
+                .get("/api/articles/1/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.an("array");
+                  expect(comments).to.have.length(13);
+                  expect(comments[2]).to.have.keys(
+                    "comment_id",
+                    "body",
+                    "votes",
+                    "article_id",
+                    "author",
+                    "created_at"
+                  );
                 });
             });
           });

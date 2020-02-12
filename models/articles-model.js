@@ -43,3 +43,10 @@ exports.addComment = ({ username, body }, article_id) => {
       else return rows;
     });
 };
+
+exports.fetchComments = article_id => {
+  return knex
+    .select("*")
+    .from("comments")
+    .where({ article_id });
+};
