@@ -27,7 +27,9 @@ exports.patchArticleVotes = (req, res, next) => {
 };
 
 exports.postComment = (req, res, next) => {
-  addComment(req.body, req.params.id).then(([comment]) => {
-    res.status(201).send({ comment });
-  });
+  addComment(req.body, req.params.article_id)
+    .then(([comment]) => {
+      res.status(201).send({ comment });
+    })
+    .catch(err => next(err));
 };

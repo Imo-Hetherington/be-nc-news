@@ -36,5 +36,10 @@ exports.addComment = ({ username, body }, article_id) => {
   };
   return knex("comments")
     .insert(newComment)
-    .returning("*");
+    .returning("*")
+    .then(rows => {
+      if (rows.length === 0)
+        return Promise.reject({ status: 404, msg: "Article Not Found" });
+      else return rows;
+    });
 };

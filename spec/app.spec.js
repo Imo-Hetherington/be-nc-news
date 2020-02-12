@@ -210,14 +210,15 @@ describe("app", () => {
           });
         });
         describe("/comments", () => {
-          describe("POST", () => {
+          describe.only("POST", () => {
             it("Success - status 201 and returns the posted comment", () => {
+              const comment = {
+                username: "rogersop",
+                body: "Classic content, I love to see it!"
+              };
               return request(app)
                 .post("/api/articles/10/comments")
-                .send({
-                  username: "rogersop",
-                  body: "Classic content, I love to see it!"
-                })
+                .send(comment)
                 .expect(201)
                 .then(({ body }) => {
                   expect(body.comment).to.be.an("object");
@@ -229,6 +230,32 @@ describe("app", () => {
                     "article_id",
                     "created_at"
                   );
+                });
+            });
+            it("Non-existent article_id - status: 422 and returns 'unprocessable entity' message", () => {
+              const comment = {
+                username: "rogersop",
+                body: "Classic content, I love to see it!"
+              };
+              return request(app)
+                .post("/api/articles/2000/comments")
+                .send(comment)
+                .expect(422)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Unprocessable Entity");
+                });
+            });
+            it("Invalid article_id - status: 400 and returns 'bad request' message", () => {
+              const comment = {
+                username: "rogersop",
+                body: "Classic content, I love to see it!"
+              };
+              return request(app)
+                .post("/api/articles/top/comments")
+                .send(comment)
+                .expect(400)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Bad Request");
                 });
             });
           });
