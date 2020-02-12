@@ -143,6 +143,16 @@ describe("app", () => {
                 expect(body.article.votes).to.equal(3);
               });
           });
+          it("inc_votes is negative - status 200 and returns article object with decremented votes", () => {
+            const votes = { inc_votes: -10 };
+            return request(app)
+              .patch("/api/articles/1")
+              .send(votes)
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.article.votes).to.equal(90);
+              });
+          });
         });
         describe("INVALID METHODS", () => {
           it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
