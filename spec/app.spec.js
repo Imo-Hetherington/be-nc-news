@@ -123,6 +123,14 @@ describe("app", () => {
                 expect(body.msg).to.equal("Article Not Found");
               });
           });
+          it("Invalid article_id - status: 400 and returns 'bad request' message", () => {
+            return request(app)
+              .get("/api/articles/top")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Bad Request");
+              });
+          });
         });
       });
     });
