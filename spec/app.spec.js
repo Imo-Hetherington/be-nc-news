@@ -1,6 +1,8 @@
 process.env.NODE_ENV = "test";
 const chai = require("chai");
-const expect = chai.expect;
+const { expect } = chai;
+const chaiSorted = require("chai-sorted");
+chai.use(chaiSorted);
 const request = require("supertest");
 const app = require("../app");
 const connection = require("../db/connection");
@@ -275,6 +277,14 @@ describe("app", () => {
                     "author",
                     "created_at"
                   );
+                });
+            });
+            it("Default sort_by is created_at ascending", () => {
+              return request(app)
+                .get("/api/articles/1/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.sortedBy("created_at");
                 });
             });
             it("Non-existent article_id - status: 404 and returns 'Article Not Found' message", () => {

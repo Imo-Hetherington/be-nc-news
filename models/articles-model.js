@@ -49,6 +49,7 @@ exports.fetchComments = article_id => {
     .select("*")
     .from("comments")
     .where({ article_id })
+    .orderBy("created_at")
     .then(rows => {
       if (rows.length === 0)
         return Promise.reject({ status: 404, msg: "Article Not Found" });
