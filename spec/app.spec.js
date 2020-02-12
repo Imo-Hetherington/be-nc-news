@@ -173,6 +173,16 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
+          it("Invalid inc_votes value - status: 400 and returns 'bad request' message", () => {
+            const votes = { inc_votes: "4 million" };
+            return request(app)
+              .patch("/api/articles/3")
+              .send(votes)
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Bad Request");
+              });
+          });
         });
         describe("INVALID METHODS", () => {
           it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {

@@ -4,7 +4,8 @@ const {
 } = require("../models/articles-model");
 
 exports.getArticle = (req, res, next) => {
-  fetchArticle(req.params.article_id)
+  const id = req.params.article_id;
+  fetchArticle(id)
     .then(([article]) => {
       res.status(200).send({ article });
     })
@@ -12,9 +13,14 @@ exports.getArticle = (req, res, next) => {
 };
 
 exports.patchArticleVotes = (req, res, next) => {
-  updateArticleVotes(req.params.article_id, req.body.inc_votes)
-    .then(([article]) => {
-      res.status(200).send({ article });
-    })
-    .catch(err => next(err));
+  const id = req.params.article_id;
+  const votes = req.body.inc_votes;
+  if (isNaN(Number(votes))) next({ status: 400, msg: "Bad Request" });
+  else {
+    updateArticleVotes(id, votes)
+      .then(([article]) => {
+        res.status(200).send({ article });
+      })
+      .catch(err => next(err));
+  }
 };
