@@ -15,9 +15,9 @@ exports.fetchArticle = article_id => {
     });
 };
 
-exports.updateArticleVotes = (article_id, inc_votes) => {
+exports.updateArticleVotes = (article_id, votes) => {
   return knex
-    .increment("votes", inc_votes)
+    .increment({ votes })
     .from("articles")
     .where({ article_id })
     .returning("*")
