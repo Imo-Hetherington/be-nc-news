@@ -363,6 +363,14 @@ describe("app", () => {
               expect(body.articles).to.have.length(12);
             });
         });
+        it("Default sort is by created_at descending", () => {
+          return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.be.descendingBy("created_at");
+            });
+        });
       });
     });
   });
