@@ -3,6 +3,7 @@ const {
   fetchArticles,
   updateArticleVotes
 } = require("../models/articles-model");
+const { checkTopicExists } = require("../models/topics-model");
 
 exports.getArticle = (req, res, next) => {
   const { article_id } = req.params;
@@ -27,7 +28,10 @@ exports.patchArticleVotes = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  fetchArticles().then(articles => {
-    res.status(200).send({ articles });
-  });
+  const { topic } = req.query;
+  Promise.all([fetchArticles(req.query), checkTopicExists(topic)])
+    .then(([articles]) => {
+      res.status(200).send({ articles });
+    })
+    .catch(err => next(err));
 };

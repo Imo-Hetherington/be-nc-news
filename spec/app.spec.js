@@ -436,6 +436,22 @@ describe("app", () => {
               expect(body.articles).to.eql([]);
             });
         });
+        it("When passed a invalid/ non-existent sort_by query, will return 400 bad request error", () => {
+          return request(app)
+            .get("/api/articles?sort_by=lemons")
+            .expect(400)
+            .then(({ body }) => {
+              expect(body.msg).to.equal("Bad Request");
+            });
+        });
+        it("When passed an non-existent topic query, will return 404 Not Found error", () => {
+          return request(app)
+            .get("/api/articles?topic=4")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body.msg).to.equal("Topic Not Found");
+            });
+        });
       });
     });
   });
