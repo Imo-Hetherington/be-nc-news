@@ -6,8 +6,8 @@ const {
 } = require("../models/articles-model");
 
 exports.getArticle = (req, res, next) => {
-  const id = req.params.article_id;
-  fetchArticle(id)
+  const { article_id } = req.params;
+  fetchArticle(article_id)
     .then(([article]) => {
       res.status(200).send({ article });
     })
@@ -15,11 +15,11 @@ exports.getArticle = (req, res, next) => {
 };
 
 exports.patchArticleVotes = (req, res, next) => {
-  const id = req.params.article_id;
-  const votes = req.body.inc_votes;
-  if (isNaN(Number(votes))) next({ status: 400, msg: "Bad Request" });
+  const { article_id } = req.params;
+  const { inc_votes } = req.body;
+  if (isNaN(Number(inc_votes))) next({ status: 400, msg: "Bad Request" });
   else {
-    updateArticleVotes(id, votes)
+    updateArticleVotes(article_id, inc_votes)
       .then(([article]) => {
         res.status(200).send({ article });
       })
@@ -28,7 +28,8 @@ exports.patchArticleVotes = (req, res, next) => {
 };
 
 exports.postCommentToArticle = (req, res, next) => {
-  addComment(req.body, req.params.article_id)
+  const { article_id } = req.params;
+  addComment(req.body, article_id)
     .then(([comment]) => {
       res.status(201).send({ comment });
     })
@@ -36,8 +37,9 @@ exports.postCommentToArticle = (req, res, next) => {
 };
 
 exports.getCommentsByArticle = (req, res, next) => {
-  fetchComments(req.params.article_id, req.query)
-    .then(comments => {
+  const { article_id } = req.params;
+  Promise.all([fetchComments(article_id, req.query), fetchArticle(article_id)])
+    .then(([comments]) => {
       res.status(200).send({ comments });
     })
     .catch(err => next(err));

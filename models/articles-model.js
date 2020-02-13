@@ -52,10 +52,5 @@ exports.fetchComments = (
     .select("*")
     .from("comments")
     .where({ article_id })
-    .orderBy(sort_by, order)
-    .then(rows => {
-      if (rows.length === 0)
-        return Promise.reject({ status: 404, msg: "Article Not Found" });
-      else return rows;
-    });
+    .orderBy(sort_by, order);
 };
