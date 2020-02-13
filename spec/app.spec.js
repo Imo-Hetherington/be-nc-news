@@ -353,6 +353,17 @@ describe("app", () => {
           });
         });
       });
+      describe.only("GET", () => {
+        it("Success - status: 200 and returns list of article objects", () => {
+          return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.be.an("array");
+              expect(body.articles).to.have.length(12);
+            });
+        });
+      });
     });
   });
 });

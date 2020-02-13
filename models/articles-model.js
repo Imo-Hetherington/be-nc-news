@@ -27,3 +27,7 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
       else return rows;
     });
 };
+
+exports.fetchArticles = () => {
+  return knex.select("*").from("articles");
+};
