@@ -452,6 +452,14 @@ describe("app", () => {
               expect(body.msg).to.equal("Topic Not Found");
             });
         });
+        it("When passed an non-existent author query, will return 404 Not Found error", () => {
+          return request(app)
+            .get("/api/articles?author=me")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body.msg).to.equal("Author Not Found");
+            });
+        });
       });
     });
   });
