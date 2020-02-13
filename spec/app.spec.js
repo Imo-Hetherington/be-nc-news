@@ -500,6 +500,15 @@ describe("app", () => {
                 expect(comment.votes).to.equal(3);
               });
           });
+          it("Success with inc_votes negative - status: 200 and returns comment object with votes incremented", () => {
+            return request(app)
+              .patch("/api/comments/1")
+              .send({ inc_votes: -6 })
+              .expect(200)
+              .then(({ body: { comment } }) => {
+                expect(comment.votes).to.equal(10);
+              });
+          });
         });
       });
     });
