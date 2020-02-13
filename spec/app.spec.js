@@ -412,12 +412,28 @@ describe("app", () => {
               expect(body.articles).to.have.length(11);
             });
         });
+        it("When passed a topic with no articles in the query, will return an empty array", () => {
+          return request(app)
+            .get("/api/articles?topic=paper")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.eql([]);
+            });
+        });
         it("Can pass an author query to filter results by author", () => {
           return request(app)
             .get("/api/articles?author=butter_bridge")
             .expect(200)
             .then(({ body }) => {
               expect(body.articles).to.have.length(3);
+            });
+        });
+        it("When passed an author with no articles in the query, will return an empty array", () => {
+          return request(app)
+            .get("/api/articles?author=lurker")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.eql([]);
             });
         });
       });
