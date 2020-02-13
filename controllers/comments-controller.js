@@ -1,7 +1,8 @@
 const {
   addComment,
   fetchComments,
-  updateCommentVotes
+  updateCommentVotes,
+  removeComment
 } = require("../models/comments-model");
 const { fetchArticle } = require("../models/articles-model");
 
@@ -51,4 +52,13 @@ exports.patchCommentVotes = (req, res, next) => {
       })
       .catch(err => next(err));
   }
+};
+
+exports.deleteComment = (req, res, next) => {
+  const { comment_id } = req.params;
+  removeComment(comment_id)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(err => next(err));
 };

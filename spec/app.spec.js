@@ -481,7 +481,7 @@ describe("app", () => {
     });
     describe("/comments", () => {
       describe("/:comment_id", () => {
-        describe.only("PATCH", () => {
+        describe("PATCH", () => {
           it("Success - status: 200 and returns comment object with votes incremented", () => {
             return request(app)
               .patch("/api/comments/5")
@@ -534,6 +534,27 @@ describe("app", () => {
               .expect(400)
               .then(({ body }) => {
                 expect(body.msg).to.equal("Bad Request");
+              });
+          });
+        });
+        describe.only("DELETE", () => {
+          it("Success - returns 204 and no content and removes comment from the db", () => {
+            return request(app)
+              .delete("/api/comments/2")
+              .expect(204)
+              .then(() => {
+                return request(app)
+                  .patch("/api/comments/2")
+                  .send({ inc_votes: 6 })
+                  .expect(404);
+              });
+          });
+          it("Valid but non-existent comment id - status: 404 and returns 'Comment Not Found' error", () => {
+            return request(app)
+              .delete("/api/comments/9000")
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Comment Not Found");
               });
           });
         });

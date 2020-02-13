@@ -38,3 +38,14 @@ exports.updateCommentVotes = (comment_id, votes) => {
       else return rows;
     });
 };
+
+exports.removeComment = comment_id => {
+  return knex("comments")
+    .delete()
+    .where({ comment_id })
+    .then(deleteCount => {
+      if (deleteCount === 0)
+        return Promise.reject({ status: 404, msg: "Comment Not Found" });
+      else return deleteCount;
+    });
+};
