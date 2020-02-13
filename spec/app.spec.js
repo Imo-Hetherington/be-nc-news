@@ -197,7 +197,7 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
-          it.only("Extra key(s) on the request body - status: 200 and ignores extra keys", () => {
+          it("Extra key(s) on the request body - status: 200 and ignores extra keys", () => {
             return request(app)
               .patch("/api/articles/1")
               .send({ inc_votes: 6, author: "rogersop" })
@@ -591,6 +591,21 @@ describe("app", () => {
               .then(({ body }) => {
                 expect(body.msg).to.equal("Bad Request");
               });
+          });
+        });
+        describe.only("INVALID METHODS", () => {
+          it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
+            const methods = ["post", "get", "put"];
+            const methodTests = methods.map(method => {
+              return request(app)
+                [method]("/api/comments/8")
+                .expect(405)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Invalid Method");
+                });
+            });
+
+            return Promise.all(methodTests);
           });
         });
       });
