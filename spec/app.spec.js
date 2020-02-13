@@ -404,6 +404,14 @@ describe("app", () => {
               expect(body.articles).to.be.ascendingBy("created_at");
             });
         });
+        it("Can pass a topic query to filter results by topic", () => {
+          return request(app)
+            .get("/api/articles?topic=mitch")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.have.length(11);
+            });
+        });
       });
     });
   });
