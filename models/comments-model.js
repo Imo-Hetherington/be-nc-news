@@ -26,3 +26,10 @@ exports.fetchComments = (
     .where({ article_id })
     .orderBy(sort_by, order);
 };
+
+exports.updateCommentVotes = (comment_id, { inc_votes }) => {
+  return knex("comments")
+    .increment("votes", inc_votes)
+    .where({ comment_id })
+    .returning("*");
+};

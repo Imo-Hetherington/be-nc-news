@@ -92,7 +92,7 @@ describe("app", () => {
         });
       });
     });
-    describe.only("/articles", () => {
+    describe("/articles", () => {
       describe("/:article_id", () => {
         describe("GET", () => {
           it("Success - status: 200 returns object with default article keys", () => {
@@ -476,6 +476,30 @@ describe("app", () => {
           });
 
           return Promise.all(methodTests);
+        });
+      });
+    });
+    describe("/comments", () => {
+      describe("/:comment_id", () => {
+        describe.only("PATCH", () => {
+          it("Success - status: 200 and returns comment object with votes incremented", () => {
+            return request(app)
+              .patch("/api/comments/5")
+              .send({ inc_votes: 3 })
+              .expect(200)
+              .then(({ body: { comment } }) => {
+                expect(comment).to.be.an("object");
+                expect(comment).to.have.keys(
+                  "comment_id",
+                  "body",
+                  "votes",
+                  "article_id",
+                  "author",
+                  "created_at"
+                );
+                expect(comment.votes).to.equal(3);
+              });
+          });
         });
       });
     });
