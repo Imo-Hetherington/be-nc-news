@@ -287,46 +287,54 @@ describe("app", () => {
                   expect(comments).to.be.eql([]);
                 });
             });
-          });
-          it("Default sort_by is created_at ascending", () => {
-            return request(app)
-              .get("/api/articles/1/comments")
-              .expect(200)
-              .then(({ body: { comments } }) => {
-                expect(comments).to.be.descendingBy("created_at");
-              });
-          });
-          it("sort_by query can be passed", () => {
-            return request(app)
-              .get("/api/articles/1/comments?sort_by=author")
-              .expect(200)
-              .then(({ body: { comments } }) => {
-                expect(comments).to.be.descendingBy("author");
-              });
-          });
-          it("order query can be passed ", () => {
-            return request(app)
-              .get("/api/articles/1/comments?order=asc")
-              .expect(200)
-              .then(({ body: { comments } }) => {
-                expect(comments).to.be.ascendingBy("created_at");
-              });
-          });
-          it("Non-existent article_id - status: 404 and returns 'Article Not Found' message", () => {
-            return request(app)
-              .get("/api/articles/2000/comments")
-              .expect(404)
-              .then(({ body }) => {
-                expect(body.msg).to.equal("Article Not Found");
-              });
-          });
-          it("Invalid article_id - status: 400 and returns 'bad request' message", () => {
-            return request(app)
-              .get("/api/articles/top/comments")
-              .expect(400)
-              .then(({ body }) => {
-                expect(body.msg).to.equal("Bad Request");
-              });
+            it("Default sort_by is created_at ascending", () => {
+              return request(app)
+                .get("/api/articles/1/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.descendingBy("created_at");
+                });
+            });
+            it("sort_by query can be passed", () => {
+              return request(app)
+                .get("/api/articles/1/comments?sort_by=author")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.descendingBy("author");
+                });
+            });
+            it("order query can be passed ", () => {
+              return request(app)
+                .get("/api/articles/1/comments?order=asc")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.ascendingBy("created_at");
+                });
+            });
+            it("Non-existent article_id - status: 404 and returns 'Article Not Found' message", () => {
+              return request(app)
+                .get("/api/articles/2000/comments")
+                .expect(404)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Article Not Found");
+                });
+            });
+            it("Invalid article_id - status: 400 and returns 'bad request' message", () => {
+              return request(app)
+                .get("/api/articles/top/comments")
+                .expect(400)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Bad Request");
+                });
+            });
+            it("sort_by column valid but non-existent - returns 400 bad request error", () => {
+              return request(app)
+                .get("/api/articles/1/comments?sort_by=jokes_count")
+                .expect(400)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Bad Request");
+                });
+            });
           });
         });
       });
