@@ -74,6 +74,8 @@ describe("app", () => {
                 expect(body.msg).to.equal("User not found");
               });
           });
+        });
+        describe("INVALID METHODS", () => {
           it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
             const methods = ["post", "delete", "patch", "put"];
             const methodTests = methods.map(method => {
@@ -353,7 +355,7 @@ describe("app", () => {
           });
         });
       });
-      describe.only("GET", () => {
+      describe("GET", () => {
         it("Success - status: 200 and returns list of article objects", () => {
           return request(app)
             .get("/api/articles")
@@ -436,7 +438,7 @@ describe("app", () => {
               expect(body.articles).to.eql([]);
             });
         });
-        it("When passed a invalid/ non-existent sort_by query, will return 400 bad request error", () => {
+        it("When passed an invalid/ non-existent sort_by query, will return 400 bad request error", () => {
           return request(app)
             .get("/api/articles?sort_by=lemons")
             .expect(400)
@@ -459,6 +461,21 @@ describe("app", () => {
             .then(({ body }) => {
               expect(body.msg).to.equal("Author Not Found");
             });
+        });
+      });
+      describe("INVALID METHODS", () => {
+        it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
+          const methods = ["post", "delete", "patch", "put"];
+          const methodTests = methods.map(method => {
+            return request(app)
+              [method]("/api/articles")
+              .expect(405)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Invalid Method");
+              });
+          });
+
+          return Promise.all(methodTests);
         });
       });
     });
