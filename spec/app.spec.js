@@ -610,5 +610,35 @@ describe("app", () => {
         });
       });
     });
+    describe("GET", () => {
+      it("Success - status: 200 and returns JSON objects", () => {
+        return request(app)
+          .get("/api")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.endpoints).to.be.an("object");
+            expect(body.endpoints).to.have.keys(
+              "GET /api",
+              "GET /api/articles",
+              "GET /api/topics"
+            );
+          });
+      });
+    });
+    describe("INVALID METHODS", () => {
+      it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
+        const methods = ["post", "delete", "put", "patch"];
+        const methodTests = methods.map(method => {
+          return request(app)
+            [method]("/api")
+            .expect(405)
+            .then(({ body }) => {
+              expect(body.msg).to.equal("Invalid Method");
+            });
+        });
+
+        return Promise.all(methodTests);
+      });
+    });
   });
 });
