@@ -327,13 +327,28 @@ describe("app", () => {
                   expect(body.msg).to.equal("Bad Request");
                 });
             });
-            it("sort_by column valid but non-existent - returns 400 bad request error", () => {
+            it("sort_by column non-existent - returns 400 bad request error", () => {
               return request(app)
                 .get("/api/articles/1/comments?sort_by=jokes_count")
                 .expect(400)
                 .then(({ body }) => {
                   expect(body.msg).to.equal("Bad Request");
                 });
+            });
+          });
+          describe("INVALID METHODS", () => {
+            it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
+              const methods = ["patch", "delete", "put"];
+              const methodTests = methods.map(method => {
+                return request(app)
+                  [method]("/api/articles/2/comments")
+                  .expect(405)
+                  .then(({ body }) => {
+                    expect(body.msg).to.equal("Invalid Method");
+                  });
+              });
+
+              return Promise.all(methodTests);
             });
           });
         });
