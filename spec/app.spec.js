@@ -412,6 +412,14 @@ describe("app", () => {
               expect(body.articles).to.have.length(11);
             });
         });
+        it("Can pass an author query to filter results by author", () => {
+          return request(app)
+            .get("/api/articles?author=butter_bridge")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.have.length(3);
+            });
+        });
       });
     });
   });

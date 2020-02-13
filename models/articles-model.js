@@ -28,7 +28,12 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
     });
 };
 
-exports.fetchArticles = ({ sort_by = "created_at", order = "desc", topic }) => {
+exports.fetchArticles = ({
+  sort_by = "created_at",
+  order = "desc",
+  topic,
+  author
+}) => {
   return knex
     .select("articles.*")
     .count("comment_id as comment_count")
@@ -36,6 +41,7 @@ exports.fetchArticles = ({ sort_by = "created_at", order = "desc", topic }) => {
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .modify(query => {
       if (topic) query.where({ topic });
+      if (author) query.where({ "articles.author": author });
     })
     .groupBy("articles.article_id")
     .orderBy(sort_by, order);
