@@ -509,6 +509,15 @@ describe("app", () => {
                 expect(comment.votes).to.equal(10);
               });
           });
+          it("Valid but non-existent comment id - status: 404 and returns 'Comment Not Found' error", () => {
+            return request(app)
+              .patch("/api/comments/9000")
+              .send({ inc_votes: 6 })
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Comment Not Found");
+              });
+          });
         });
       });
     });
