@@ -518,6 +518,15 @@ describe("app", () => {
                 expect(body.msg).to.equal("Comment Not Found");
               });
           });
+          it("Invalid comment id - status: 400 and returns 'Bad Request' error", () => {
+            return request(app)
+              .patch("/api/comments/plum")
+              .send({ inc_votes: 6 })
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Bad Request");
+              });
+          });
         });
       });
     });
