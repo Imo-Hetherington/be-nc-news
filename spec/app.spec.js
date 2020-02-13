@@ -593,7 +593,7 @@ describe("app", () => {
               });
           });
         });
-        describe.only("INVALID METHODS", () => {
+        describe("INVALID METHODS", () => {
           it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
             const methods = ["post", "get", "put"];
             const methodTests = methods.map(method => {
