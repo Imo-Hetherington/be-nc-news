@@ -371,6 +371,23 @@ describe("app", () => {
               expect(body.articles).to.be.descendingBy("created_at");
             });
         });
+        it("Article objects have default articles keys and comment_count key", () => {
+          return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles[4]).to.have.keys(
+                "article_id",
+                "author",
+                "title",
+                "body",
+                "votes",
+                "created_at",
+                "topic",
+                "comment_count"
+              );
+            });
+        });
       });
     });
   });

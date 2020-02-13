@@ -29,5 +29,11 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
 };
 
 exports.fetchArticles = () => {
-  return knex.select("*").from("articles");
+  return knex
+    .select("articles.*")
+    .count("comment_id as comment_count")
+    .from("articles")
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .groupBy("articles.article_id")
+    .orderBy("articles.created_at", "desc");
 };
