@@ -388,6 +388,22 @@ describe("app", () => {
               );
             });
         });
+        it("Can pass a sort_by query to change order by column", () => {
+          return request(app)
+            .get("/api/articles?sort_by=author")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.be.descendingBy("author");
+            });
+        });
+        it("Can pass an order query to change order to ascending", () => {
+          return request(app)
+            .get("/api/articles?order=asc")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.be.ascendingBy("created_at");
+            });
+        });
       });
     });
   });

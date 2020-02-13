@@ -28,12 +28,12 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
     });
 };
 
-exports.fetchArticles = () => {
+exports.fetchArticles = ({ sort_by = "created_at", order = "desc" }) => {
   return knex
     .select("articles.*")
     .count("comment_id as comment_count")
     .from("articles")
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .groupBy("articles.article_id")
-    .orderBy("articles.created_at", "desc");
+    .orderBy(sort_by, order);
 };
