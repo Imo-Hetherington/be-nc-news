@@ -527,6 +527,15 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
+          it("Invalid inc_votes value - status: 400 and returns 'Bad Request' error", () => {
+            return request(app)
+              .patch("/api/comments/1")
+              .send({ inc_votes: "7 thousand" })
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Bad Request");
+              });
+          });
         });
       });
     });
