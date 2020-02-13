@@ -197,6 +197,15 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
+          it.only("Extra key(s) on the request body - status: 200 and ignores extra keys", () => {
+            return request(app)
+              .patch("/api/articles/1")
+              .send({ inc_votes: 6, author: "rogersop" })
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.article.author).to.equal("butter_bridge");
+              });
+          });
         });
         describe("INVALID METHODS", () => {
           it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {
@@ -536,8 +545,26 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
+          it("No inc_votes value - status: 400 and returns 'Bad Request' error", () => {
+            return request(app)
+              .patch("/api/comments/1")
+              .send({})
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).to.equal("Bad Request");
+              });
+          });
+          it("Extra key(s) on the request body - status: 200 and ignores extra keys", () => {
+            return request(app)
+              .patch("/api/comments/1")
+              .send({ inc_votes: 6, author: "rogersop" })
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.comment.author).to.equal("butter_bridge");
+              });
+          });
         });
-        describe.only("DELETE", () => {
+        describe("DELETE", () => {
           it("Success - returns 204 and no content and removes comment from the db", () => {
             return request(app)
               .delete("/api/comments/2")
