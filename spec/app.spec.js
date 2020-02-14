@@ -496,6 +496,22 @@ describe("app", () => {
               expect(body.msg).to.equal("Author Not Found");
             });
         });
+        it("Can pass a limit query which limits the number of results on a page", () => {
+          return request(app)
+            .get("/api/articles?limit=10")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.have.length(10);
+            });
+        });
+        it("Can pass a p query which determines the page of results which is returned", () => {
+          return request(app)
+            .get("/api/articles?limit=10&p=2")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.articles).to.have.length(2);
+            });
+        });
       });
       describe("INVALID METHODS", () => {
         it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {

@@ -31,6 +31,8 @@ exports.updateArticleVotes = (article_id, votes = 0) => {
 exports.fetchArticles = ({
   sort_by = "created_at",
   order = "desc",
+  limit,
+  p,
   topic,
   author
 }) => {
@@ -42,6 +44,8 @@ exports.fetchArticles = ({
     .modify(query => {
       if (topic) query.where({ topic });
       if (author) query.where({ "articles.author": author });
+      if (limit) query.limit(10);
+      if (limit && p) query.offset((p - 1) * limit);
     })
     .groupBy("articles.article_id")
     .orderBy(sort_by, order);
