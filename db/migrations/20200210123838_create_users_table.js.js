@@ -5,7 +5,7 @@ exports.up = function(knex) {
       .primary()
       .unique()
       .notNullable();
-    usersTable.string("name").notNullable;
+    usersTable.string("name").notNullable();
     usersTable.string("avatar_url").defaultTo("default-avatar.jpeg");
   });
 };

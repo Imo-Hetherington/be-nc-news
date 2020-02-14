@@ -3,8 +3,14 @@ exports.up = function(knex) {
     commentsTable.increments("comment_id").primary();
     commentsTable.text("body").notNullable();
     commentsTable.integer("votes").defaultTo(0);
-    commentsTable.integer("article_id").references("articles.article_id");
-    commentsTable.string("author").references("users.username");
+    commentsTable
+      .integer("article_id")
+      .references("articles.article_id")
+      .notNullable();
+    commentsTable
+      .string("author")
+      .references("users.username")
+      .notNullable();
     commentsTable.timestamp("created_at").defaultTo(knex.fn.now());
   });
 };

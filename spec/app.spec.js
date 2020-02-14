@@ -271,6 +271,31 @@ describe("app", () => {
                   expect(body.msg).to.equal("Bad Request");
                 });
             });
+            it("Missing key(s) on request body - status 400 and returns 'bad request' error", () => {
+              const comment = {
+                username: "rogersop"
+              };
+              return request(app)
+                .post("/api/articles/2/comments")
+                .send(comment)
+                .expect(400)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Bad Request");
+                });
+            });
+            it("Username not in users table - status 422 and returns 'Unprocessable Entity' error", () => {
+              const comment = {
+                username: "jill",
+                body: "This recipe changed my life"
+              };
+              return request(app)
+                .post("/api/articles/5/comments")
+                .send(comment)
+                .expect(422)
+                .then(({ body }) => {
+                  expect(body.msg).to.equal("Unprocessable Entity");
+                });
+            });
           });
           describe("GET", () => {
             it("Success - status: 200 and returns all comments for a specific article id", () => {
