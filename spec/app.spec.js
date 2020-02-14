@@ -187,7 +187,7 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
-          it.only("Empty request body - status: 200 and returns unchanged article object", () => {
+          it("Empty request body - status: 200 and returns unchanged article object", () => {
             const votes = {};
             return request(app)
               .patch("/api/articles/3")
@@ -545,13 +545,14 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
-          it("No inc_votes value - status: 400 and returns 'Bad Request' error", () => {
+          it("Empty request body - status: 200 and returns unchanged comment object", () => {
+            const votes = {};
             return request(app)
-              .patch("/api/comments/1")
-              .send({})
-              .expect(400)
+              .patch("/api/comments/3")
+              .send(votes)
+              .expect(200)
               .then(({ body }) => {
-                expect(body.msg).to.equal("Bad Request");
+                expect(body.comment.votes).to.equal(100);
               });
           });
           it("Extra key(s) on the request body - status: 200 and ignores extra keys", () => {

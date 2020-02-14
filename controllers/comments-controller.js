@@ -44,7 +44,8 @@ exports.getCommentsByArticle = (req, res, next) => {
 exports.patchCommentVotes = (req, res, next) => {
   const { inc_votes } = req.body;
   const { comment_id } = req.params;
-  if (isNaN(Number(inc_votes))) next({ status: 400, msg: "Bad Request" });
+  if (inc_votes && isNaN(Number(inc_votes)))
+    next({ status: 400, msg: "Bad Request" });
   else {
     updateCommentVotes(comment_id, inc_votes)
       .then(([comment]) => {
