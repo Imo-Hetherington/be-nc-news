@@ -18,10 +18,86 @@
           "title": "Seafood substitutions are increasing",
           "topic": "cooking",
           "author": "weegembump",
+          "votes": 3,
           "body": "Text from the article..",
           "created_at": 1527695953341
         }
       ]
     }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "serves a single article object",
+    "exampleResponse": {
+      "article": {
+        "title": "Seafood substitutions are increasing",
+        "topic": "cooking",
+        "author": "weegembump",
+        "votes": 3,
+        "body": "Text from the article..",
+        "created_at": 1527695953341
+      }
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "Increments the votes of an article by the given inc_votes integer value, and serves the updated article object",
+    "exampleRequestBody": { "inc_votes": 3 },
+    "exampleResponse": {
+      "article": {
+        "title": "Seafood substitutions are increasing",
+        "topic": "cooking",
+        "author": "weegembump",
+        "votes": 6,
+        "body": "Text from the article..",
+        "created_at": 1527695953341
+      }
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "Serves an array of all the comments on an article",
+    "exampleResponse": {
+      "comments": [
+        {
+          "author": "weegembump",
+          "votes": 3,
+          "body": "Text from the comment..",
+          "article_id": 45,
+          "created_at": 1527695953341
+        },
+        {
+          "author": "bob",
+          "votes": -1,
+          "body": "Text from the comment..",
+          "article_id": 45,
+          "created_at": 152769596781
+        }
+      ]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Posts a comment to an article and serves the posted comment",
+    "exampleRequestBody": { "username": "bob", "body": "My new comment.." },
+    "exampleResponse": {
+      "author": "bob",
+      "votes": 0,
+      "body": "My new comment..",
+      "article_id": 5,
+      "created_at": 152769596999
+    }
+  },
+  "PATCH /api/comments/:comment_id": {
+    "description": "Increments the votes of a comment by the given inc_votes integer value, and serves the updated comment object",
+    "exampleRequestBody": { "inc_votes": 3 },
+    "exampleResponse": {
+      "article": {
+        "author": "elf",
+        "votes": 7,
+        "body": "Text from this comment...",
+        "article_id": 4,
+        "created_at": 152769577882
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes the given comment, and responds with 204 status when successful"
   }
 }
