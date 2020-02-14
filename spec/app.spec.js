@@ -34,6 +34,22 @@ describe("app", () => {
               expect(body.topics[0]).to.have.keys("slug", "description");
             });
         });
+        it.only("Can pass a limit query which limits the rumber of results to a page", () => {
+          return request(app)
+            .get("/api/topics?limit=2")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.topics).to.have.length(2);
+            });
+        });
+        it.only("Can pass a p query which determines the page of results which is returned", () => {
+          return request(app)
+            .get("/api/topics?limit=2&p=2")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.topics).to.have.length(1);
+            });
+        });
       });
       describe("INVALID METHODS", () => {
         it("Unhandled method - status: 405 and returns 'Invalid Method' error message", () => {

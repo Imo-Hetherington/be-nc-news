@@ -44,7 +44,7 @@ exports.fetchArticles = ({
     .modify(query => {
       if (topic) query.where({ topic });
       if (author) query.where({ "articles.author": author });
-      if (limit) query.limit(10);
+      if (limit) query.limit(limit);
       if (limit && p) query.offset((p - 1) * limit);
     })
     .groupBy("articles.article_id")
