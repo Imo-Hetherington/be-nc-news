@@ -18,7 +18,8 @@ exports.getArticle = (req, res, next) => {
 exports.patchArticleVotes = (req, res, next) => {
   const { article_id } = req.params;
   const { inc_votes } = req.body;
-  if (isNaN(Number(inc_votes))) next({ status: 400, msg: "Bad Request" });
+  if (inc_votes && isNaN(Number(inc_votes)))
+    next({ status: 400, msg: "Bad Request" });
   else {
     updateArticleVotes(article_id, inc_votes)
       .then(([article]) => {

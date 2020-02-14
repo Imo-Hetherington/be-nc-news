@@ -187,14 +187,14 @@ describe("app", () => {
                 expect(body.msg).to.equal("Bad Request");
               });
           });
-          it("Empty request body - status: 400 and returns 'bad request' message", () => {
+          it.only("Empty request body - status: 200 and returns unchanged article object", () => {
             const votes = {};
             return request(app)
               .patch("/api/articles/3")
               .send(votes)
-              .expect(400)
+              .expect(200)
               .then(({ body }) => {
-                expect(body.msg).to.equal("Bad Request");
+                expect(body.article.votes).to.equal(0);
               });
           });
           it("Extra key(s) on the request body - status: 200 and ignores extra keys", () => {

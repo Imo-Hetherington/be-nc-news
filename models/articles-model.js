@@ -15,7 +15,7 @@ exports.fetchArticle = article_id => {
     });
 };
 
-exports.updateArticleVotes = (article_id, votes) => {
+exports.updateArticleVotes = (article_id, votes = 0) => {
   return knex
     .increment({ votes })
     .from("articles")
